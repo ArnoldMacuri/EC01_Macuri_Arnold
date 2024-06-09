@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -21,6 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -61,7 +63,7 @@ fun menuPrincipal(){
             1 -> Ejercicio1Screen()
             2 -> Ejercicio2Screen()
             3 -> Ejercicio3Screen()
-
+            4 -> Ejercicio4Screen()
         }
     }
 }
@@ -195,3 +197,46 @@ fun Ejercicio3Screen(){
     }
 }
 
+@Composable
+fun Ejercicio4Screen(){
+    var ingresarNumero by remember { mutableStateOf("") }
+    var resultado by remember { mutableStateOf<String?>(null) }
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Text(text = "Suma de digitos", fontSize = 20.sp)
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+            value = ingresarNumero, onValueChange = {ingresarNumero = it},
+            label = { Text(text = "Ingrese un numero entre 23-99")},
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = {val numero = ingresarNumero.toIntOrNull()
+            resultado = if (numero != null && numero in 23..99) {
+                sumaDigitos(numero).toString()
+            } else {
+                "Incorrecto, Ingresa un numero valido entre 23-99"
+            }
+        }) {
+            Text(text = "Calcular suma de digitos")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        resultado?.let { 
+            Text(text = "Suma de dígitos: $it")
+        }
+    }
+}
+
+fun sumaDigitos(numero: Int): Int{
+    var suma = 0
+    var num = numero
+    while (num>0){
+        suma += num % 10
+        num /= 10
+    }
+    return suma
+}
