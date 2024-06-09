@@ -59,6 +59,7 @@ fun menuPrincipal(){
         Spacer(modifier = Modifier.height(16.dp))
         when (seleccionarProblema){
             1 -> Ejercicio1Screen()
+            2 -> Ejercicio2Screen()
 
 
         }
@@ -109,6 +110,49 @@ fun Ejercicio1Screen(){
         }
         Spacer(modifier = Modifier.height(16.dp))
         resultado?.let { 
+            Text(text = "Resultado: $it")
+        }
+    }
+}
+
+@Composable
+fun Ejercicio2Screen(){
+    var num1 by remember { mutableStateOf("") }
+    var num2 by remember { mutableStateOf("") }
+    var resultado by remember { mutableStateOf<String?>(null) }
+    
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Text(text = "Multiplica, resta y suma", fontSize = 20.sp)
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+            value = num1, onValueChange = { num1 = it },
+            label = {Text(text = "Número 1")})
+        Spacer(modifier = Modifier.height(8.dp))
+        TextField(
+            value = num2, onValueChange = {num2 = it},
+            label = { Text(text = "Numero 2")})
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = {
+            val n1 = num1.toIntOrNull()
+            val n2 = num2.toIntOrNull()
+            resultado = if (n1 !=null && n2 != null){
+                when{
+                    n1 == n2 -> (n1 * n2).toString()
+                    n1 > n2 -> (n1 - n2).toString()
+                    else -> (n1 + n2).toString()
+                }
+            }else {
+                "Lo ingresado esta incorrecto"
+            }
+        }) {
+            Text(text = "Calcular")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        resultado?.let {
             Text(text = "Resultado: $it")
         }
     }
