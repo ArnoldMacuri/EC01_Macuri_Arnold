@@ -60,7 +60,7 @@ fun menuPrincipal(){
         when (seleccionarProblema){
             1 -> Ejercicio1Screen()
             2 -> Ejercicio2Screen()
-
+            3 -> Ejercicio3Screen()
 
         }
     }
@@ -157,3 +157,41 @@ fun Ejercicio2Screen(){
         }
     }
 }
+
+@Composable
+fun Ejercicio3Screen(){
+    var numeroMes by remember { mutableStateOf("") }
+    var mes by remember { mutableStateOf<String?>(null) }
+
+    val meses = listOf(
+        "Enero","Febrero","Marzo","Abril","Mayo","Junio",
+        "Julio","Agosto","Septiembre","Octubre","Nomviembre","Diciembre"
+    )
+    
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Text(text = "Meses del Año", fontSize = 20.sp)
+        Spacer(modifier = Modifier.height(16.dp))
+        TextField(
+            value = numeroMes, onValueChange = {numeroMes = it}, label = { Text(text = "Número del mes")} )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = {
+            val mesNumero = numeroMes.toIntOrNull()
+            mes = if (mesNumero != null && mesNumero in 1..12){
+                meses[mesNumero - 1]
+            }else{
+                "Número de mes incorrecto"
+            }
+        }) {
+            Text(text = "Obtener Mes")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        mes?.let{
+            Text(text = "Mes: $it")
+        }
+    }
+}
+
